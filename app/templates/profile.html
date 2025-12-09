@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="space-y-3">
+    <h2 class="text-xl font-semibold">Meu Perfil</h2>
+    <div class="p-4 bg-white border rounded">
+      <p><span class="font-medium">Nome:</span> {{ profile.nome or '—' }}</p>
+      <p><span class="font-medium">Telefone:</span> {{ profile.telefone or '—' }}</p>
+      <p><span class="font-medium">Bio:</span> {{ profile.bio or '—' }}</p>
+      <p><span class="font-medium">Papel:</span> {{ current_user.role }}</p>
+      <a href="{{ url_for('main.edit_profile') }}" class="inline-block mt-3 px-3 py-2 bg-blue-600 text-white rounded">Editar</a>
+    </div>
+  </div>
+{% endblock %}
