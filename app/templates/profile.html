@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div class="space-y-3">
-    <h2 class="text-xl font-semibold">Meu Perfil</h2>
-    <div class="p-4 bg-white border rounded">
-      <p><span class="font-medium">Nome:</span> {{ profile.nome or '—' }}</p>
-      <p><span class="font-medium">Telefone:</span> {{ profile.telefone or '—' }}</p>
-      <p><span class="font-medium">Bio:</span> {{ profile.bio or '—' }}</p>
-      <p><span class="font-medium">Papel:</span> {{ current_user.role }}</p>
-      <a href="{{ url_for('main.edit_profile') }}" class="inline-block mt-3 px-3 py-2 bg-blue-600 text-white rounded">Editar</a>
+  <div class="space-y-4">
+    <h2 class="text-2xl font-semibold">Meu Perfil</h2>
+    <div class="p-6 bg-neutral-900 border border-neutral-800 rounded-2xl">
+      <p class="text-gray-300"><span class="font-medium text-gray-100">Nome:</span> {{ profile.nome or '—' }}</p>
+      <p class="text-gray-300"><span class="font-medium text-gray-100">Telefone:</span> {{ profile.telefone or '—' }}</p>
+      <p class="text-gray-300"><span class="font-medium text-gray-100">Bio:</span> {{ profile.bio or '—' }}</p>
+      <p class="text-gray-300"><span class="font-medium text-gray-100">Papel:</span> {{ current_user.role }}</p>
+      <a href="{{ url_for('main.edit_profile') }}" class="inline-block mt-4 px-4 py-2.5 bg-yellow-400 text-black rounded-lg font-medium hover:bg-yellow-300 transition">Editar</a>
     </div>
   </div>
 {% endblock %}

@@ -6,30 +6,33 @@
     <title>Habilita</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-50 text-gray-900">
-    <nav class="bg-white border-b border-gray-200">
-      <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-        <a href="/" class="font-semibold">Habilita</a>
-        <div class="space-x-3">
+  <body class="min-h-screen bg-black text-gray-100">
+    <nav class="bg-black border-b border-neutral-800">
+      <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2">
+          <span class="inline-block h-3 w-3 rounded-full bg-yellow-400"></span>
+          <span class="text-lg font-semibold tracking-wide">Habilita</span>
+        </a>
+        <div class="flex items-center gap-4">
           {% if current_user.is_authenticated %}
-            <a href="{{ url_for('main.profile') }}" class="text-sm">Perfil</a>
+            <a href="{{ url_for('main.profile') }}" class="text-sm text-gray-300 hover:text-yellow-400 transition">Perfil</a>
             {% if current_user.role == 'administrador' %}
-              <a href="{{ url_for('admin.users') }}" class="text-sm">Admin</a>
+              <a href="{{ url_for('admin.users') }}" class="text-sm text-gray-300 hover:text-yellow-400 transition">Admin</a>
             {% endif %}
-            <a href="{{ url_for('auth.logout') }}" class="text-sm">Sair</a>
+            <a href="{{ url_for('auth.logout') }}" class="px-3 py-1.5 text-sm font-medium rounded bg-neutral-800 hover:bg-neutral-700 transition">Sair</a>
           {% else %}
-            <a href="{{ url_for('auth.login') }}" class="text-sm">Entrar</a>
-            <a href="{{ url_for('auth.register') }}" class="text-sm">Cadastrar</a>
+            <a href="{{ url_for('auth.login') }}" class="text-sm text-gray-300 hover:text-yellow-400 transition">Entrar</a>
+            <a href="{{ url_for('auth.register') }}" class="px-3 py-1.5 text-sm font-medium rounded bg-yellow-400 text-black hover:bg-yellow-300 transition">Cadastrar</a>
           {% endif %}
         </div>
       </div>
     </nav>
-    <main class="max-w-4xl mx-auto px-4 py-6">
+    <main class="max-w-5xl mx-auto px-4 py-8">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
           <div class="mb-4">
             {% for msg in messages %}
-              <div class="p-3 bg-yellow-100 border border-yellow-200 rounded">{{ msg }}</div>
+              <div class="p-3 bg-yellow-400 text-black border border-yellow-300 rounded">{{ msg }}</div>
             {% endfor %}
           </div>
         {% endif %}
