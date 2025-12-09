@@ -2,11 +2,11 @@
 {% block content %}
   <div class="space-y-4">
     <h2 class="text-2xl font-semibold">Meu Perfil</h2>
-    <div class="p-6 bg-neutral-900 border border-neutral-800 rounded-2xl">
-      <p class="text-gray-300"><span class="font-medium text-gray-100">Nome:</span> {{ profile.nome or '—' }}</p>
-      <p class="text-gray-300"><span class="font-medium text-gray-100">Telefone:</span> {{ profile.telefone or '—' }}</p>
-      <p class="text-gray-300"><span class="font-medium text-gray-100">Bio:</span> {{ profile.bio or '—' }}</p>
-      <p class="text-gray-300"><span class="font-medium text-gray-100">Papel:</span> {{ current_user.role }}</p>
+    <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+      <p class="text-gray-700"><span class="font-medium text-gray-900">Nome:</span> {{ profile.nome or '—' }}</p>
+      <p class="text-gray-700"><span class="font-medium text-gray-900">Telefone:</span> {{ profile.telefone or '—' }}</p>
+      <p class="text-gray-700"><span class="font-medium text-gray-900">Bio:</span> {{ profile.bio or '—' }}</p>
+      <p class="text-gray-700"><span class="font-medium text-gray-900">Papel:</span> {{ current_user.role }}</p>
       <a href="{{ url_for('main.edit_profile') }}" class="inline-block mt-4 px-4 py-2.5 bg-yellow-400 text-black rounded-lg font-medium hover:bg-yellow-300 transition">Editar</a>
     </div>
   </div>
