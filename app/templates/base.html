@@ -24,6 +24,7 @@
             {% if current_user.role == 'administrador' %}
               <a href="{{ url_for('admin.users') }}" class="text-sm text-gray-700 hover:text-black transition">Admin</a>
               <a href="{{ url_for('admin.cities') }}" class="text-sm text-gray-700 hover:text-black transition">Cidades</a>
+              <a href="{{ url_for('admin.testimonials') }}" class="text-sm text-gray-700 hover:text-black transition">Depoimentos</a>
             {% endif %}
             <a href="{{ url_for('auth.logout') }}" class="px-3 py-1.5 text-sm font-medium rounded bg-gray-200 text-gray-900 hover:bg-gray-300 transition">Sair</a>
           {% else %}

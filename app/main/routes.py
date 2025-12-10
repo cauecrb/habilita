@@ -2,17 +2,19 @@ from flask import render_template, request, redirect, url_for, abort
 from flask_login import login_required, current_user
 from . import main_bp
 from ..extensions import db
-from ..models import Profile, City, User, PriceTier
+from ..models import Profile, City, User, PriceTier, Testimonial
 
 @main_bp.route("/")
 def index():
-    testimonials = [
-        {"name": "Ana Souza", "city": "São Paulo", "text": "Encontrei um ótimo tutor e passei na prova prática!"},
-        {"name": "Carlos Pereira", "city": "Curitiba", "text": "Aulas claras e objetivas, evoluí muito em poucas semanas."},
-        {"name": "Mariana Lima", "city": "Belo Horizonte", "text": "Plataforma simples, consegui agendar e aprender no meu ritmo."},
-        {"name": "João Santos", "city": "Rio de Janeiro", "text": "O professor foi paciente e as dicas fizeram toda a diferença."},
-        {"name": "Fernanda Alves", "city": "Porto Alegre", "text": "Preço justo e qualidade excelente, recomendo!"},
-    ]
+    testimonials = Testimonial.query.order_by(Testimonial.created_at.desc()).limit(10).all()
+    if not testimonials:
+        testimonials = [
+            {"name": "Ana Souza", "city": "São Paulo", "text": "Encontrei um ótimo tutor e passei na prova prática!"},
+            {"name": "Carlos Pereira", "city": "Curitiba", "text": "Aulas claras e objetivas, evoluí muito em poucas semanas."},
+            {"name": "Mariana Lima", "city": "Belo Horizonte", "text": "Plataforma simples, consegui agendar e aprender no meu ritmo."},
+            {"name": "João Santos", "city": "Rio de Janeiro", "text": "O professor foi paciente e as dicas fizeram toda a diferença."},
+            {"name": "Fernanda Alves", "city": "Porto Alegre", "text": "Preço justo e qualidade excelente, recomendo!"},
+        ]
     return render_template("index.html", testimonials=testimonials)
 
 @main_bp.route("/profile")

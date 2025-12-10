@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, abort
 from flask_login import login_required, current_user
 from . import admin_bp
 from ..extensions import db
-from ..models import User, City
+from ..models import User, City, Testimonial
 
 def admin_required():
     if not current_user.is_authenticated or current_user.role != "administrador":
@@ -50,3 +50,50 @@ def cities():
         return redirect(url_for("admin.cities"))
     cities = City.query.order_by(City.nome.asc()).all()
     return render_template("admin_cities.html", cities=cities)
+
+@admin_bp.route("/testimonials", methods=["GET", "POST"])
+@login_required
+def testimonials():
+    admin_required()
+    if request.method == "POST":
+        action = request.form.get("action", "create")
+        if action == "create":
+            name = request.form.get("name", "").strip()
+            city = request.form.get("city", "").strip()
+            text = request.form.get("text", "").strip()
+            rating = request.form.get("rating")
+            try:
+                rating = int(rating) if rating else None
+            except ValueError:
+                rating = None
+            if name and text:
+                db.session.add(Testimonial(name=name, city=city or None, text=text, rating=rating))
+                db.session.commit()
+        elif action == "delete":
+            tid = request.form.get("testimonial_id")
+            try:
+                t = Testimonial.query.get(int(tid))
+                if t:
+                    db.session.delete(t)
+                    db.session.commit()
+            except Exception:
+                pass
+        elif action == "update":
+            tid = request.form.get("testimonial_id")
+            try:
+                t = Testimonial.query.get(int(tid))
+                if t:
+                    t.name = request.form.get("name", t.name).strip() or t.name
+                    t.city = request.form.get("city", t.city).strip() or t.city
+                    t.text = request.form.get("text", t.text).strip() or t.text
+                    rating = request.form.get("rating")
+                    try:
+                        t.rating = int(rating) if rating else None
+                    except ValueError:
+                        pass
+                    db.session.commit()
+            except Exception:
+                pass
+        return redirect(url_for("admin.testimonials"))
+    items = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
+    return render_template("admin_testimonials.html", items=items)

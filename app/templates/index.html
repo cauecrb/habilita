@@ -16,17 +16,15 @@
     <div class="rounded-2xl bg-white p-6 border border-gray-200">
       <h2 class="text-xl font-semibold mb-3">Relatos de pessoas satisfeitas</h2>
       <div id="carousel" class="relative">
-        <div class="overflow-hidden rounded-xl">
-          <div class="min-h-[140px]">
-            {% for t in testimonials %}
-            <div class="slide {% if loop.index0 != 0 %}hidden{% endif %}">
-              <div class="p-4">
-                <p class="text-gray-900 text-lg">“{{ t.text }}”</p>
-                <div class="mt-2 text-sm text-gray-700">{{ t.name }} • {{ t.city }}</div>
-              </div>
+        <div class="overflow-hidden rounded-xl relative min-h-[160px]">
+          {% for t in testimonials %}
+          <div class="slide absolute inset-0 transition-opacity duration-500 {% if loop.index0 == 0 %}opacity-100{% else %}opacity-0{% endif %}">
+            <div class="p-4">
+              <p class="text-gray-900 text-lg">“{{ t.text }}”</p>
+              <div class="mt-2 text-sm text-gray-700">{{ t.name }}{% if t.city %} • {{ t.city }}{% endif %}</div>
             </div>
-            {% endfor %}
           </div>
+          {% endfor %}
         </div>
         <div class="flex items-center justify-between mt-3">
           <div class="flex items-center gap-2">
@@ -47,7 +45,7 @@
     const dots = Array.from(document.querySelectorAll('#carousel .dot'))
     let idx = 0
     function show(i){
-      slides.forEach((s,j)=>{s.classList.toggle('hidden', j!==i)})
+      slides.forEach((s,j)=>{s.classList.toggle('opacity-100', j===i); s.classList.toggle('opacity-0', j!==i)})
       dots.forEach((d,j)=>{d.classList.toggle('bg-gray-300', j!==i); d.classList.toggle('bg-yellow-400', j===i)})
       idx = i
     }

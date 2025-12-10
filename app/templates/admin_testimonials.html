@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2 class="text-2xl font-semibold mb-4">Depoimentos</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+      <h3 class="font-medium mb-3">Adicionar depoimento</h3>
+      <form method="post" class="space-y-3">
+        <input type="hidden" name="action" value="create">
+        <div>
+          <label class="block text-sm text-gray-700">Nome</label>
+          <input name="name" class="w-full bg-white border border-gray-300 rounded px-3 py-2">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-700">Cidade</label>
+          <input name="city" class="w-full bg-white border border-gray-300 rounded px-3 py-2">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-700">Texto</label>
+          <textarea name="text" rows="4" class="w-full bg-white border border-gray-300 rounded px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm text-gray-700">Avaliação (1–5)</label>
+          <input name="rating" type="number" min="1" max="5" class="w-full bg-white border border-gray-300 rounded px-3 py-2">
+        </div>
+        <button class="px-4 py-2 bg-yellow-400 text-black rounded font-medium hover:bg-yellow-300 transition">Salvar</button>
+      </form>
+    </div>
+    <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+      <h3 class="font-medium mb-3">Depoimentos cadastrados</h3>
+      <div class="space-y-3">
+        {% for t in items %}
+          <div class="p-3 border border-gray-200 rounded">
+            <div class="font-medium">{{ t.name }}{% if t.city %} • {{ t.city }}{% endif %}</div>
+            <div class="text-sm text-gray-700">{{ t.text }}</div>
+            {% if t.rating %}<div class="text-xs text-gray-600 mt-1">Avaliação: {{ t.rating }}/5</div>{% endif %}
+            <div class="mt-2 flex gap-2">
+              <form method="post" class="flex gap-2">
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="testimonial_id" value="{{ t.id }}">
+                <input name="name" placeholder="Nome" class="bg-white border border-gray-300 rounded px-2 py-1 text-sm">
+                <input name="city" placeholder="Cidade" class="bg-white border border-gray-300 rounded px-2 py-1 text-sm">
+                <input name="rating" type="number" min="1" max="5" placeholder="Nota" class="bg-white border border-gray-300 rounded px-2 py-1 text-sm w-20">
+                <button class="px-3 py-1.5 bg-gray-200 text-gray-900 rounded hover:bg-gray-300 transition text-sm">Atualizar</button>
+              </form>
+              <form method="post">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="testimonial_id" value="{{ t.id }}">
+                <button class="px-3 py-1.5 bg-gray-200 text-gray-900 rounded hover:bg-gray-300 transition text-sm">Excluir</button>
+              </form>
+            </div>
+          </div>
+        {% else %}
+          <p class="text-gray-700">Nenhum depoimento.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
