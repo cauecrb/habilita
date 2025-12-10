@@ -6,7 +6,14 @@ from ..models import Profile, City, User, PriceTier
 
 @main_bp.route("/")
 def index():
-    return render_template("index.html")
+    testimonials = [
+        {"name": "Ana Souza", "city": "São Paulo", "text": "Encontrei um ótimo tutor e passei na prova prática!"},
+        {"name": "Carlos Pereira", "city": "Curitiba", "text": "Aulas claras e objetivas, evoluí muito em poucas semanas."},
+        {"name": "Mariana Lima", "city": "Belo Horizonte", "text": "Plataforma simples, consegui agendar e aprender no meu ritmo."},
+        {"name": "João Santos", "city": "Rio de Janeiro", "text": "O professor foi paciente e as dicas fizeram toda a diferença."},
+        {"name": "Fernanda Alves", "city": "Porto Alegre", "text": "Preço justo e qualidade excelente, recomendo!"},
+    ]
+    return render_template("index.html", testimonials=testimonials)
 
 @main_bp.route("/profile")
 @login_required

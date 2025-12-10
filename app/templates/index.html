@@ -13,5 +13,51 @@
         <a class="mt-6 inline-block px-5 py-2.5 bg-yellow-400 text-black rounded-lg font-medium hover:bg-yellow-300 transition" href="{{ url_for('main.profile') }}">Ir para o perfil</a>
       {% endif %}
     </div>
+    <div class="rounded-2xl bg-white p-6 border border-gray-200">
+      <h2 class="text-xl font-semibold mb-3">Relatos de pessoas satisfeitas</h2>
+      <div id="carousel" class="relative">
+        <div class="overflow-hidden rounded-xl">
+          <div class="min-h-[140px]">
+            {% for t in testimonials %}
+            <div class="slide {% if loop.index0 != 0 %}hidden{% endif %}">
+              <div class="p-4">
+                <p class="text-gray-900 text-lg">“{{ t.text }}”</p>
+                <div class="mt-2 text-sm text-gray-700">{{ t.name }} • {{ t.city }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="flex items-center justify-between mt-3">
+          <div class="flex items-center gap-2">
+            {% for t in testimonials %}
+            <button class="dot h-2.5 w-2.5 rounded-full bg-gray-300" data-idx="{{ loop.index0 }}"></button>
+            {% endfor %}
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="prev" class="px-3 py-1.5 bg-gray-200 text-gray-900 rounded hover:bg-gray-300 transition">Anterior</button>
+            <button id="next" class="px-3 py-1.5 bg-yellow-400 text-black rounded hover:bg-yellow-300 transition">Próximo</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
+  <script>
+    const slides = Array.from(document.querySelectorAll('#carousel .slide'))
+    const dots = Array.from(document.querySelectorAll('#carousel .dot'))
+    let idx = 0
+    function show(i){
+      slides.forEach((s,j)=>{s.classList.toggle('hidden', j!==i)})
+      dots.forEach((d,j)=>{d.classList.toggle('bg-gray-300', j!==i); d.classList.toggle('bg-yellow-400', j===i)})
+      idx = i
+    }
+    function next(){ show((idx+1)%slides.length) }
+    function prev(){ show((idx-1+slides.length)%slides.length) }
+    document.getElementById('next').addEventListener('click', next)
+    document.getElementById('prev').addEventListener('click', prev)
+    dots.forEach(d=>d.addEventListener('click', e=>show(parseInt(e.currentTarget.dataset.idx))))
+    let timer = setInterval(next, 5000)
+    document.getElementById('carousel').addEventListener('mouseenter', ()=>clearInterval(timer))
+    document.getElementById('carousel').addEventListener('mouseleave', ()=>{timer = setInterval(next, 5000)})
+  </script>
 {% endblock %}
