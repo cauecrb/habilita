@@ -58,11 +58,38 @@ def main():
                         if not PriceTier.query.filter_by(user_id=u.id, lessons=lessons).first():
                             db.session.add(PriceTier(user_id=u.id, lessons=lessons, price_min=pmin, price_max=pmax))
         db.session.commit()
+        # Garantir cidade e pacotes também para usuários esperados que já existiam
+        expected_emails = [
+            *[f"professor{i}@habilita.local" for i in range(1, 6)],
+            *[f"aluno{i}@habilita.local" for i in range(1, 11)],
+        ]
+        for em in expected_emails:
+            u = User.query.filter_by(email=em).first()
+            if not u:
+                continue
+            if u.profile and not u.profile.city_id and cities:
+                u.profile.city_id = random.choice(cities).id
+            if u.is_professor:
+                defaults = [(5, 300, 500), (10, 550, 900)]
+                for lessons, pmin, pmax in defaults:
+                    if not PriceTier.query.filter_by(user_id=u.id, lessons=lessons).first():
+                        db.session.add(PriceTier(user_id=u.id, lessons=lessons, price_min=pmin, price_max=pmax))
+        db.session.commit()
+
+        # Escrever TXT com credenciais e metadados (cidade e pacotes) dos usuários criados nesta execução
         instance_dir = ensure_instance_dir()
         out_path = os.path.join(instance_dir, "seed_credentials.txt")
         with open(out_path, "w", encoding="utf-8") as f:
             for email, password, role, nome in creds:
-                f.write(f"{role};{nome};{email};{password}\n")
+                u = User.query.filter_by(email=email).first()
+                city = u.profile.city.nome if (u and u.profile and u.profile.city) else ""
+                uf = u.profile.city.uf if (u and u.profile and u.profile.city and u.profile.city.uf) else ""
+                tiers = []
+                if u and u.is_professor:
+                    for t in u.price_tiers:
+                        tiers.append(f"{t.lessons} aulas: R$ {t.price_min:.2f}{' - R$ ' + format(t.price_max, '.2f') if t.price_max else ''}")
+                tiers_str = "; ".join(tiers)
+                f.write(f"{role};{nome};{email};{password};{city};{uf};{tiers_str}\n")
 
 if __name__ == "__main__":
     main()

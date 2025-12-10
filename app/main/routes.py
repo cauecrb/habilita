@@ -38,6 +38,7 @@ def tutors():
     lessons = request.args.get("lessons")
     price_min = request.args.get("price_min")
     price_max = request.args.get("price_max")
+    ignore_tiers = request.args.get("ignore_tiers") in ("1", "true", "on")
     cities = City.query.order_by(City.nome.asc()).all()
     q = User.query.filter_by(role="professor")
     selected = None
@@ -68,7 +69,7 @@ def tutors():
             tier_filters.append((PriceTier.price_max == None) | (PriceTier.price_max <= pmax))
     except ValueError:
         pass
-    if tier_filters:
+    if tier_filters and not ignore_tiers:
         from sqlalchemy import and_
         tier_subq = db.session.query(PriceTier.user_id).filter(and_(*tier_filters)).subquery()
         q = q.filter(User.id.in_(tier_subq))
@@ -81,6 +82,7 @@ def tutors():
         selected_lessons=lessons,
         selected_price_min=price_min,
         selected_price_max=price_max,
+        ignore_tiers=ignore_tiers,
     )
 
 @main_bp.route("/pricing", methods=["GET", "POST"])
