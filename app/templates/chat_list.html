@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2 class="text-2xl font-semibold mb-4">Mensagens</h2>
+  <div class="overflow-x-auto bg-white border border-gray-200 rounded-2xl">
+    <table class="min-w-full">
+      <thead class="bg-gray-100">
+        <tr class="text-left text-gray-700">
+          <th class="px-3 py-2">Conversa</th>
+          <th class="px-3 py-2">Última mensagem</th>
+          <th class="px-3 py-2">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr class="border-t border-gray-200">
+          <td class="px-3 py-2">
+            {% if item.other %}
+              {{ item.other.profile.nome or item.other.email }} ({{ item.other.role }})
+            {% else %}
+              Participante desconhecido
+            {% endif %}
+          </td>
+          <td class="px-3 py-2">
+            {% if item.last %}
+              {{ item.last.body[:80] }}{% if item.last.body|length > 80 %}…{% endif %}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+          <td class="px-3 py-2">
+            <a href="{{ url_for('chat.thread', conversation_id=item.conv.id) }}" class="px-3 py-1.5 bg-yellow-400 text-black rounded hover:bg-yellow-300 transition">Abrir</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr class="border-t border-gray-200">
+          <td colspan="3" class="px-3 py-2 text-gray-700">Nenhuma conversa.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

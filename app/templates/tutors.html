@@ -49,6 +49,11 @@
         </ul>
       </div>
       {% endif %}
+      {% if current_user.is_authenticated and current_user.is_aluno %}
+      <div class="mt-3">
+        <a href="{{ url_for('chat.start', tutor_id=p.id) }}" class="px-3 py-1.5 bg-yellow-400 text-black rounded hover:bg-yellow-300 transition">Enviar mensagem</a>
+      </div>
+      {% endif %}
     </div>
     {% else %}
       <p class="text-gray-700">Nenhum tutor encontrado para o filtro aplicado.</p>

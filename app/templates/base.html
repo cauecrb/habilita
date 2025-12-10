@@ -16,6 +16,7 @@
         <div class="flex items-center gap-4">
           {% if current_user.is_authenticated %}
             <a href="{{ url_for('main.tutors') }}" class="text-sm text-gray-700 hover:text-black transition">Tutores</a>
+            <a href="{{ url_for('chat.list_conversations') }}" class="text-sm text-gray-700 hover:text-black transition">Mensagens</a>
             {% if current_user.is_professor %}
               <a href="{{ url_for('main.pricing') }}" class="text-sm text-gray-700 hover:text-black transition">Preços</a>
             {% endif %}

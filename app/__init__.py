@@ -4,6 +4,7 @@ from .extensions import db, login_manager, migrate
 from .auth.routes import auth_bp
 from .main.routes import main_bp
 from .admin.routes import admin_bp
+from .chat import chat_bp
 from .models import User
 
 def create_app():
@@ -21,5 +22,6 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(chat_bp)
 
     return app
