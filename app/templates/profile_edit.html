@@ -16,6 +16,15 @@
           <label class="block text-sm text-gray-700">Bio</label>
           <textarea name="bio" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400" rows="4">{{ profile.bio or '' }}</textarea>
         </div>
+        <div>
+          <label class="block text-sm text-gray-700">Cidade</label>
+          <select name="city_id" class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <option value="">Selecione...</option>
+            {% for c in cities %}
+              <option value="{{ c.id }}" {% if profile.city_id == c.id %}selected{% endif %}>{{ c.nome }}{% if c.uf %}/{{ c.uf }}{% endif %}</option>
+            {% endfor %}
+          </select>
+        </div>
         <button class="w-full px-4 py-2.5 bg-yellow-400 text-black rounded-lg font-medium hover:bg-yellow-300 transition">Salvar</button>
       </form>
     </div>

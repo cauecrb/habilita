@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2 class="text-2xl font-semibold mb-4">Cidades</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+      <h3 class="font-medium mb-3">Adicionar cidade</h3>
+      <form method="post" class="space-y-3">
+        <input type="hidden" name="action" value="create">
+        <div>
+          <label class="block text-sm text-gray-700">Nome</label>
+          <input name="nome" class="w-full bg-white border border-gray-300 rounded px-3 py-2">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-700">UF</label>
+          <input name="uf" class="w-full bg-white border border-gray-300 rounded px-3 py-2" maxlength="2">
+        </div>
+        <button class="px-4 py-2 bg-yellow-400 text-black rounded font-medium hover:bg-yellow-300 transition">Salvar</button>
+      </form>
+    </div>
+    <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+      <h3 class="font-medium mb-3">Lista de cidades</h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="bg-gray-100">
+            <tr class="text-left text-gray-700">
+              <th class="px-3 py-2">ID</th>
+              <th class="px-3 py-2">Nome</th>
+              <th class="px-3 py-2">UF</th>
+              <th class="px-3 py-2">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in cities %}
+            <tr class="border-t border-gray-200">
+              <td class="px-3 py-2">{{ c.id }}</td>
+              <td class="px-3 py-2">{{ c.nome }}</td>
+              <td class="px-3 py-2">{{ c.uf or '—' }}</td>
+              <td class="px-3 py-2">
+                <form method="post" class="inline-flex items-center gap-2">
+                  <input type="hidden" name="action" value="delete">
+                  <input type="hidden" name="city_id" value="{{ c.id }}">
+                  <button class="px-3 py-1.5 bg-gray-200 text-gray-900 rounded hover:bg-gray-300 transition">Excluir</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
